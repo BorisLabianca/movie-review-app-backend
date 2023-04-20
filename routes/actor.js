@@ -1,9 +1,30 @@
 const express = require("express");
-const { createActor } = require("../controllers/actor");
+const {
+  createActor,
+  updateActor,
+  removeActor,
+} = require("../controllers/actor");
 const { uploadImage } = require("../middlewares/multer");
+const { actorInfoValidator, validate } = require("../middlewares/validator");
 
 const router = express.Router();
 
-router.post("/create", uploadImage.single("avatar"), createActor);
+router.post(
+  "/create",
+  uploadImage.single("avatar"),
+  actorInfoValidator,
+  validate,
+  createActor
+);
+
+router.put(
+  "/update/:actorId",
+  uploadImage.single("avatar"),
+  actorInfoValidator,
+  validate,
+  updateActor
+);
+
+router.delete("/delete/:actorId", removeActor);
 
 module.exports = router;
