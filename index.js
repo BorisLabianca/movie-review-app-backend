@@ -13,6 +13,9 @@ app.use(express.json());
 const userRoutes = require("./routes/user");
 app.use("/api/user", userRoutes);
 
+const actorRoutes = require("./routes/actor");
+app.use("/api/actor", actorRoutes);
+
 app.use("/*", handleNotFound);
 
 app.use(errorHandler);
