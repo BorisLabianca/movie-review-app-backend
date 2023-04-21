@@ -3,6 +3,9 @@ const {
   createActor,
   updateActor,
   removeActor,
+  searchActor,
+  getLatestActors,
+  getSingleActor,
 } = require("../controllers/actor");
 const { uploadImage } = require("../middlewares/multer");
 const { actorInfoValidator, validate } = require("../middlewares/validator");
@@ -16,6 +19,12 @@ router.post(
   validate,
   createActor
 );
+
+router.get("/search", searchActor);
+
+router.get("/latest-uploads", getLatestActors);
+
+router.get("/single/:id", getSingleActor);
 
 router.put(
   "/update/:actorId",
