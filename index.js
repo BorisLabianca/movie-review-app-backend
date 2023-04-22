@@ -5,16 +5,19 @@ require("./db");
 const { errorHandler } = require("./middlewares/error");
 const { handleNotFound } = require("./utils/helper");
 const cors = require("cors");
+const userRoutes = require("./routes/user");
+const actorRoutes = require("./routes/actor");
+const movieRoutes = require("./routes/movie");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const userRoutes = require("./routes/user");
 app.use("/api/user", userRoutes);
 
-const actorRoutes = require("./routes/actor");
 app.use("/api/actor", actorRoutes);
+
+app.use("/api/movie", movieRoutes);
 
 app.use("/*", handleNotFound);
 
