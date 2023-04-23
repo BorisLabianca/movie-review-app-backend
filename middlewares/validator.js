@@ -122,7 +122,12 @@ exports.validateMovie = [
           throw Error("The trailer url is invalid try.");
 
         const array = url.split("/");
-        const publicId = array[array.length - 1].split(".")[0];
+        const publicId =
+          array[array.length - 3] +
+          "/" +
+          array[array.length - 2] +
+          "/" +
+          array[array.length - 1].split(".")[0];
 
         if (public_id !== publicId)
           throw Error("The trailer public_id is invalid.");
@@ -132,11 +137,11 @@ exports.validateMovie = [
         throw Error("The trailer url is invalid catch.");
       }
     }),
-  check("poster").custom((_, { req }) => {
-    if (!req.file) throw Error("The poster file is missing.");
+  // check("poster").custom((_, { req }) => {
+  //   if (!req.file) throw Error("The poster file is missing.");
 
-    return true;
-  }),
+  //   return true;
+  // }),
 ];
 
 exports.validate = (req, res, next) => {
