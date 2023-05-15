@@ -82,7 +82,7 @@ exports.searchActor = async (req, res) => {
   const { query } = req;
   const result = await Actor.find({ $text: { $search: `"${query.name}"` } });
   const actors = result.map((actor) => formatActor(actor));
-  res.status(200).json(actors);
+  res.status(200).json({ results: actors });
 };
 
 exports.getLatestActors = async (req, res) => {
