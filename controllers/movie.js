@@ -57,34 +57,37 @@ exports.createMovie = async (req, res) => {
   }
 
   //   Uplaoding poster
-  const {
-    secure_url: url,
-    public_id,
-    responsive_breakpoints,
-  } = await cloudinary.uploader.upload(file.path, {
-    folder: `/movie-review-app/movie/${newMovie._id}`,
-    transformation: {
-      width: 1920,
-      height: 1080,
-    },
-    responsive_breakpoints: {
-      create_derived: true,
-      max_width: 640,
-      max_images: 3,
-    },
-  });
+  if (file) {
+    const {
+      secure_url: url,
+      public_id,
+      responsive_breakpoints,
+    } = await cloudinary.uploader.upload(file.path, {
+      folder: `/movie-review-app/movie/${newMovie._id}`,
+      transformation: {
+        width: 1920,
+        height: 1080,
+      },
+      responsive_breakpoints: {
+        create_derived: true,
+        max_width: 640,
+        max_images: 3,
+      },
+    });
 
-  const posterData = { url, public_id, responsive: [] };
+    const posterData = { url, public_id, responsive: [] };
 
-  const { breakpoints } = responsive_breakpoints[0];
-  if (breakpoints.length) {
-    for (let imageObject of breakpoints) {
-      const { secure_url } = imageObject;
-      posterData.responsive.push(secure_url);
+    const { breakpoints } = responsive_breakpoints[0];
+    if (breakpoints.length) {
+      for (let imageObject of breakpoints) {
+        const { secure_url } = imageObject;
+        posterData.responsive.push(secure_url);
+      }
     }
+
+    newMovie.poster = posterData;
   }
 
-  newMovie.poster = posterData;
   await newMovie.save();
 
   res.status(201).json({ id: newMovie._id, title });
