@@ -15,7 +15,7 @@
 
 - Email password verification with OTP on sign-up
 - Reset password
-- JSONJSON Web Token for login
+- JSON Web Token for login
 - User side
 - Admin side
 
