@@ -264,3 +264,24 @@ exports.removeMovie = async (req, res) => {
 
   res.status(200).json({ message: "The movie was removed successfully." });
 };
+
+exports.getMovies = async (req, res) => {
+  const { pageNumber = 0, limit = 5 } = req.query;
+  console.log(pageNumber);
+  const movies = await Movie.find({})
+    .sort({ createdAt: -1 })
+    .skip(parseInt(pageNumber) * parseInt(limit))
+    .limit(limit);
+
+  const formatedMovies = movies.map((movie) => {
+    return {
+      id: movie._id,
+      title: movie.title,
+      poster: movie.poster?.url,
+      genres: movie.genres,
+      status: movie.status,
+    };
+  });
+
+  res.status(200).json({ movies: formatedMovies });
+};

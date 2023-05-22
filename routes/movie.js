@@ -7,6 +7,7 @@ const {
   updateMovieWithoutPoster,
   updateMovieWithPoster,
   removeMovie,
+  getMovies,
 } = require("../controllers/movie");
 const { parseData } = require("../utils/helper");
 const { validateMovie, validate } = require("../middlewares/validator");
@@ -31,6 +32,8 @@ router.post(
   validate,
   createMovie
 );
+
+router.get("/movies", isAuth, isAdmin, getMovies);
 
 router.patch(
   "/update-movie-without-poster/:movieId",
