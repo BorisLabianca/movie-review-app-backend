@@ -54,7 +54,7 @@ exports.updateActor = async (req, res) => {
   actor.gender = gender;
 
   await actor.save();
-  res.status(200).json(formatActor(actor));
+  res.status(200).json({ actor: formatActor(actor) });
 };
 
 exports.removeActor = async (req, res) => {
@@ -112,7 +112,7 @@ exports.getActors = async (req, res) => {
     return formatActor(actor);
   });
 
-  console.log(pageNumber);
+  // console.log(pageNumber);
 
   res.status(200).json({ profiles });
 };
