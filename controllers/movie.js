@@ -267,7 +267,7 @@ exports.removeMovie = async (req, res) => {
 
 exports.getMovies = async (req, res) => {
   const { pageNumber = 0, limit = 5 } = req.query;
-  console.log(pageNumber);
+  // console.log(pageNumber);
   const movies = await Movie.find({})
     .sort({ createdAt: -1 })
     .skip(parseInt(pageNumber) * parseInt(limit))
