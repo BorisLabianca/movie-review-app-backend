@@ -83,8 +83,11 @@ exports.searchActor = async (req, res) => {
   // const result = await Actor.find({ $text: { $search: `"${query.name}"` } });
   if (!name) return sendError(res, "Invalid request.");
   const result = await Actor.find({ name: new RegExp(`${name}`, "i") });
+  const actorsCount = await Actor.countDocuments({
+    name: new RegExp(`${name}`, "i"),
+  });
   const actors = result.map((actor) => formatActor(actor));
-  res.status(200).json({ results: actors });
+  res.status(200).json({ results: actors, count: actorsCount });
 };
 
 exports.getLatestActors = async (req, res) => {
@@ -109,12 +112,12 @@ exports.getActors = async (req, res) => {
     .sort({ createdAt: -1 })
     .skip(parseInt(pageNumber) * parseInt(limit))
     .limit(parseInt(limit));
-
+  const actorsCount = await Actor.countDocuments({});
   const profiles = actors.map((actor) => {
     return formatActor(actor);
   });
 
   // console.log(pageNumber);
 
-  res.status(200).json({ profiles });
+  res.status(200).json({ profiles, actorsCount });
 };
