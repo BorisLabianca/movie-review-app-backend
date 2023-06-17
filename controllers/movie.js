@@ -272,7 +272,7 @@ exports.getMovies = async (req, res) => {
     .sort({ createdAt: -1 })
     .skip(parseInt(pageNumber) * parseInt(limit))
     .limit(limit);
-
+  const moviesCount = await Movie.countDocuments({});
   const formatedMovies = movies.map((movie) => {
     return {
       id: movie._id,
@@ -283,5 +283,5 @@ exports.getMovies = async (req, res) => {
     };
   });
 
-  res.status(200).json({ movies: formatedMovies });
+  res.status(200).json({ movies: formatedMovies, moviesCount });
 };
