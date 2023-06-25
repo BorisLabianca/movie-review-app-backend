@@ -110,33 +110,7 @@ exports.validateMovie = [
         return true;
       }
     }),
-  check("trailer")
-    .isObject()
-    .withMessage(
-      "The trailerInfo must be an object with url and public_id keys."
-    )
-    .custom(({ url, public_id }) => {
-      try {
-        const result = new URL(url);
-        if (!result.protocol.includes("http"))
-          throw Error("The trailer url is invalid try.");
 
-        const array = url.split("/");
-        const publicId =
-          array[array.length - 3] +
-          "/" +
-          array[array.length - 2] +
-          "/" +
-          array[array.length - 1].split(".")[0];
-
-        if (public_id !== publicId)
-          throw Error("The trailer public_id is invalid.");
-
-        return true;
-      } catch (error) {
-        throw Error("The trailer url is invalid catch.");
-      }
-    }),
   // check("poster").custom((_, { req }) => {
   //   if (!req.file) throw Error("The poster file is missing.");
 
@@ -144,10 +118,35 @@ exports.validateMovie = [
   // }),
 ];
 
-exports.validate = (req, res, next) => {
-  const error = validationResult(req).array();
-  if (error.length) {
-    return res.json({ error: error[0].msg });
-  }
-  next();
-};
+(exports.validateTrailer = check("trailer")
+  .isObject()
+  .withMessage("The trailerInfo must be an object with url and public_id keys.")
+  .custom(({ url, public_id }) => {
+    try {
+      const result = new URL(url);
+      if (!result.protocol.includes("http"))
+        throw Error("The trailer url is invalid try.");
+
+      const array = url.split("/");
+      const publicId =
+        array[array.length - 3] +
+        "/" +
+        array[array.length - 2] +
+        "/" +
+        array[array.length - 1].split(".")[0];
+
+      if (public_id !== publicId)
+        throw Error("The trailer public_id is invalid.");
+
+      return true;
+    } catch (error) {
+      throw Error("The trailer url is invalid catch.");
+    }
+  })),
+  (exports.validate = (req, res, next) => {
+    const error = validationResult(req).array();
+    if (error.length) {
+      return res.json({ error: error[0].msg });
+    }
+    next();
+  });
