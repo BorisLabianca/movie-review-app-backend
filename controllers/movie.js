@@ -328,3 +328,19 @@ exports.getMovieForUpdate = async (req, res) => {
     },
   });
 };
+
+exports.searchMovies = async (req, res) => {
+  const { title } = req.query;
+  const movies = await Movie.find({ title: { $regex: title, $options: "i" } });
+  res.status(200).json({
+    results: movies.map((m) => {
+      return {
+        id: m._id,
+        title: m.title,
+        poster: m.poster,
+        genres: m.genres,
+        status: m.status,
+      };
+    }),
+  });
+};
