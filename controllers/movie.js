@@ -340,7 +340,7 @@ exports.searchMovies = async (req, res) => {
       return {
         id: m._id,
         title: m.title,
-        poster: m.poster,
+        poster: m.poster.url,
         genres: m.genres,
         status: m.status,
       };
