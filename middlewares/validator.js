@@ -118,7 +118,7 @@ exports.validateMovie = [
   // }),
 ];
 
-(exports.validateTrailer = check("trailer")
+exports.validateTrailer = check("trailer")
   .isObject()
   .withMessage("The trailerInfo must be an object with url and public_id keys.")
   .custom(({ url, public_id }) => {
@@ -142,11 +142,17 @@ exports.validateMovie = [
     } catch (error) {
       throw Error("The trailer url is invalid catch.");
     }
-  })),
-  (exports.validate = (req, res, next) => {
-    const error = validationResult(req).array();
-    if (error.length) {
-      return res.json({ error: error[0].msg });
-    }
-    next();
   });
+
+exports.validateRatings = check(
+  "rating",
+  "Rating must be a number between 0 and 10."
+).isFloat({ min: 0, max: 10 });
+
+exports.validate = (req, res, next) => {
+  const error = validationResult(req).array();
+  if (error.length) {
+    return res.json({ error: error[0].msg });
+  }
+  next();
+};

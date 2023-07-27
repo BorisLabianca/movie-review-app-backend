@@ -8,6 +8,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/user");
 const actorRoutes = require("./routes/actor");
 const movieRoutes = require("./routes/movie");
+const reviewRoutes = require("./routes/review");
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,8 @@ app.use("/api/user", userRoutes);
 app.use("/api/actor", actorRoutes);
 
 app.use("/api/movie", movieRoutes);
+
+app.use("/api/review", reviewRoutes);
 
 app.use("/*", handleNotFound);
 
