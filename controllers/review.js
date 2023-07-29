@@ -19,4 +19,17 @@ exports.addReview = async (req, res) => {
   });
   if (isAlreadyReviewed)
     return sendError(res, "Invalid request, user has already posted a review.");
+
+  const newReview = new Review({
+    owner: userId,
+    parentMovie: movie._id,
+    content,
+    rating,
+  });
+  movie.reviews.push(newReview._id);
+  await movie.save();
+
+  await newReview.save();
+
+  res.status(200).json({ message: "Your review has been added." });
 };
