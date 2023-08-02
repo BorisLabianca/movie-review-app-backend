@@ -33,3 +33,21 @@ exports.addReview = async (req, res) => {
 
   res.status(200).json({ message: "Your review has been added." });
 };
+
+exports.updateReview = async (req, res) => {
+  const { reviewId } = req.params;
+  const { content, rating } = req.body;
+  const userId = req.user._id;
+
+  if (!isValidObjectId(reviewId)) return sendError(res, "Invalid request.");
+
+  const review = await Review.findOne({ owner: userId, _id: reviewId });
+  if (!review) return sendError(res, "Review not found.", 404);
+
+  review.content = content;
+  review.rating = rating;
+
+  await review.save();
+
+  res.status(200).json({ message: "Your review has been updated." });
+};
