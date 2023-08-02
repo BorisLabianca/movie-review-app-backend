@@ -367,3 +367,61 @@ exports.getLatestUploads = async (req, res) => {
 
   res.status(200).json({ movies });
 };
+
+exports.getSingleMovie = async (req, res) => {
+  const { movieId } = req.params;
+
+  if (!isValidObjectId(movieId)) return sendError(res, "Invalid movie ID.");
+
+  const movie = await Movie.findById(movieId).populate(
+    "director writers cast.actor"
+  );
+
+  const {
+    _id: id,
+    title,
+    storyLine,
+    cast,
+    writers,
+    director,
+    releaseDate,
+    genres,
+    tags,
+    language,
+    poster,
+    trailer,
+    type,
+  } = movie;
+  res.status(200).json({
+    movie: {
+      id,
+      title,
+      storyLine,
+      cast: cast.map((c) => ({
+        id: c._id,
+        profile: {
+          id: c.actor._id,
+          name: c.actor.name,
+          avatar: c.actor.avatar.url,
+        },
+        leadActor: c.leadActor,
+        roleAs: c.roleAs,
+      })),
+      writers: writers.map((w) => ({
+        id: w._id,
+        name: w.name,
+      })),
+      director: {
+        id: director._id,
+        name: director.name,
+      },
+      releaseDate,
+      genres,
+      tags,
+      language,
+      poster: poster.url,
+      trailer: trailer.url,
+      type,
+    },
+  });
+};
