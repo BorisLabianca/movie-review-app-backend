@@ -9,6 +9,7 @@ const {
   getMovies,
   getMovieForUpdate,
   searchMovies,
+  getLatestUploads,
 } = require("../controllers/movie");
 const { parseData } = require("../utils/helper");
 const {
@@ -65,6 +66,9 @@ router.get("/for-update/:movieId", isAuth, isAdmin, getMovieForUpdate);
 // );
 
 router.get("/search", isAuth, isAdmin, searchMovies);
+
+// For normal users
+router.get("/latest-uploads", getLatestUploads);
 
 router.patch(
   "/update/:movieId",
