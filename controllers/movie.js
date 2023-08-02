@@ -410,10 +410,12 @@ exports.getSingleMovie = async (req, res) => {
       writers: writers.map((w) => ({
         id: w._id,
         name: w.name,
+        avatar: w.avatar.url,
       })),
       director: {
         id: director._id,
         name: director.name,
+        avatar: director.avatar.url,
       },
       releaseDate,
       genres,
