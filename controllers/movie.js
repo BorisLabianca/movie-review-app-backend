@@ -1,6 +1,11 @@
-const { sendError, formatActor } = require("../utils/helper");
+const {
+  sendError,
+  formatActor,
+  averageRatingPipeline,
+} = require("../utils/helper");
 const cloudinary = require("../cloudinary/index");
 const Movie = require("../models/Movie");
+const Review = require("../models/Review");
 const { isValidObjectId } = require("mongoose");
 
 exports.uploadTrailer = async (req, res) => {
@@ -377,6 +382,16 @@ exports.getSingleMovie = async (req, res) => {
     "director writers cast.actor"
   );
 
+  const [aggregatedResponse] = await Review.aggregate(
+    averageRatingPipeline(movie._id)
+  );
+  const reviews = {};
+
+  if (aggregatedResponse) {
+    const { ratingAverage, reviewCount } = aggregatedResponse;
+    reviews.ratingAverage = parseFloat(ratingAverage).toFixed(1);
+    reviews.reviewCount = reviewCount;
+  }
   const {
     _id: id,
     title,
@@ -424,6 +439,9 @@ exports.getSingleMovie = async (req, res) => {
       poster: poster.url,
       trailer: trailer.url,
       type,
+      reviews: { ...reviews },
     },
   });
 };
+
+exports.getRelatedMovies = (req, res) => {};
