@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const cloudinary = require("../cloudinary/index");
+const Review = require("../models/Review");
 
 exports.sendError = (res, error, statusCode = 401) => {
   return res.status(statusCode).json({ error });
@@ -99,4 +100,19 @@ exports.relatedMoviesAggregation = (tags, movieId) => {
     },
     { $limit: 5 },
   ];
+};
+
+exports.getAverageRatings = async (movieId) => {
+  const [aggregatedResponse] = await Review.aggregate(
+    this.averageRatingPipeline(movieId)
+  );
+  const reviews = {};
+
+  if (aggregatedResponse) {
+    const { ratingAverage, reviewCount } = aggregatedResponse;
+    reviews.ratingAverage = parseFloat(ratingAverage).toFixed(1);
+    reviews.reviewCount = reviewCount;
+  }
+
+  return reviews;
 };
