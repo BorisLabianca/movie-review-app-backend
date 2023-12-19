@@ -103,7 +103,7 @@ exports.getSingleActor = async (req, res) => {
   const actor = await Actor.findById(id);
   if (!actor) return sendError(res, "Invalid request, record not found.", 404);
 
-  res.status(200).json(formatActor(actor));
+  res.status(200).json({ actor: formatActor(actor) });
 };
 
 exports.getActors = async (req, res) => {
