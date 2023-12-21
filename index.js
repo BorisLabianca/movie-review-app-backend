@@ -9,6 +9,7 @@ const userRoutes = require("./routes/user");
 const actorRoutes = require("./routes/actor");
 const movieRoutes = require("./routes/movie");
 const reviewRoutes = require("./routes/review");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 app.use(cors());
@@ -21,6 +22,8 @@ app.use("/api/actor", actorRoutes);
 app.use("/api/movie", movieRoutes);
 
 app.use("/api/review", reviewRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 app.use("/*", handleNotFound);
 
