@@ -1,6 +1,6 @@
 # Movie Review App Backend
 
-<img width="1725" alt="Capture d’écran 2023-04-09 à 23 23 36" src="https://user-images.githubusercontent.com/114598539/230797169-62f1f652-048f-4f1c-b819-a1d4574d3eb3.png">
+<img width="1725" alt="Screen capture" src="https://github.com/BorisLabianca/movie-review-app-backend/assets/114598539/3b0e66f8-3d98-4a97-8550-c3cf5d3d3f9b">
 
 ## Techs Used
 
